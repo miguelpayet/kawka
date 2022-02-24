@@ -1,0 +1,52 @@
+<html>
+<body>
+<div>
+    <p>Order #: {{ pedido.idpedido }}</p>
+    <p>Received on: {{ pedido.fecha_creacion }}</p>
+    <p>Email: {{ pedido.cliente.email }}</p>
+    <p>Phone: {{ pedido.cliente.telefono }}</p>
+</div>
+<div>
+    <p>Order items</p>
+    <table style="border: 1px solid black;">
+        <thead>
+        <tr>
+            <th>quantity</th>
+            <th>product</th>
+            <th>flavor</th>
+            <th>options</th>
+            <th>comments</th>
+            <th>price</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for p in pedido.productos %}
+            <tr>
+                <td>{{ p.cantidad }}</td>
+                <td>{{ p.producto.nombre }}</td>
+                <td>
+                    {% for po in p.opciones %}
+                        {{ po.opcion.nombre }}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for pv in p.variaciones %}
+                        <span>{{ pv.variacion.nombre }}</span>
+                    {% endfor %}
+                </td>
+                <td>
+                    {{ p.comentario }}
+                </td>
+                <td>
+                    {{ p.precio }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div>
+    <p>Order total price: {{ pedido.precio }}</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+{% load static %}
+<div class="producto" id="producto-{{ producto.idproducto }}">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm">
+                <p class="nombre-producto">{{ producto.nombre }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 offset-1">
+                <p class="text-center">unit price</p>
+            </div>
+            <div class="col-sm-2 offset-2">
+                <p class="text-center">order quantity</p>
+            </div>
+            <div class="col-sm-2 offset-2">
+                <p class="text-center">total amount</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 offset-1">
+                <input readonly class="form-control form-control-lg text-center" id="precio-{{ producto.idproducto }}"
+                       type="text" value="${{ producto.precio }}"/>
+            </div>
+            <div class="col-sm-1 offset-1">
+                <img class="img-fluid signo-sumador" src="{% static 'plus.png' %}"
+                     onclick="return sumar({{ producto.idproducto }})">
+            </div>
+            <div class="col-sm-2">
+                <input class="form-control form-control-lg text-center" name="cantidad-{{ producto.idproducto }}"
+                       id="cantidad-{{ producto.idproducto }}" type="number" value="0"
+                       onchange="return calcular({{ producto.idproducto }})"/>
+            </div>
+            <div class="col-sm-1">
+                <img class="img-fluid signo-sumador" src="{% static 'minus.png' %}"
+                     onclick="return restar({{ producto.idproducto }})">
+            </div>
+            <div class="col-sm-2 offset-1">
+                <input readonly class="form-control form-control-lg text-center"
+                       id="total-{{ producto.idproducto }}" type="text" value=""/>
+            </div>
+        </div>
+        {% if producto.opciones %}
+            <div class="row">
+                <div class="col-2">
+                    <p>Flavors (choose one)</p>
+                </div>
+                <div class="col-10 variacion" id="opciones-{{ producto.idproducto }}">
+                    {% for o in producto.opciones %}
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio"
+                                   name="opciones-producto-{{ o.producto.idproducto }}"
+                                   id="producto-opcion-{{ o.idproducto_opcion }}" value="{{ o.idproducto_opcion }}">
+                            <label class="form-check-label"
+                                   for="producto-opcion-{{ o.idproducto_opcion }}">{{ o.nombre }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        {% if producto.variaciones %}
+            <div class="row">
+                <div class="col-2">
+                    <p>Options</p>
+                </div>
+                <div class="col-10" id="variaciones-{{ producto.idproducto }}">
+                    {% for v in producto.variaciones %}
+                        <div class="form-check form-check-inline variacion">
+                            <input class="form-check-input" onchange="return calcular({{ producto.idproducto }})"
+                                   name="producto-{{ producto.idproducto }}-variacion-{{ v.idproducto_variacion }}"
+                                   id="variacion-{{ v.idproducto_variacion }}" type="checkbox" value="Si">
+                            <label for="variacion-{{ v.idproducto_variacion }}">{{ v.nombre }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col">
+                <label for="comentario-{{ producto.idproducto }}">Comments</label>
+                <input class="form-control" type="text" id="comentarios-{{ producto.idproducto }}"
+                       name="comentarios-{{ producto.idproducto }}">
+            </div>
+        </div>
+    </div>
+</div>
